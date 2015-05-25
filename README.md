@@ -51,13 +51,12 @@ from Fragment to Fragment, Fragment to Activity, Activity to Fragment, and Activ
 2. Create an instance of each Fragment in `onCreate()`.
 3. Add the Fragment instance to the Activity via FragmentManager, FragmentTransaction, and
    `fragmentTransaction.add()`.
-4. Add 'implements FragmentName.Callbacks` to the Activity's class declaration.
+4. Add 'implements FragmentName.Callbacks` to the Activity's class declaration for each Fragment.
 5. Override and implement the required interface methods.
 6. Where necessary (often in event handlers within the Activity), call the Fragment's public methods
    to pass data into the Fragment.
 7.
 
-variable values are lost after screen rotation
 
 
 
