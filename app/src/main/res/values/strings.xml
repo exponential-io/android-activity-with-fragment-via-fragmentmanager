@@ -32,4 +32,7 @@
     <string name="first_name">firstName</string>
     <string name="set_last_name">setLastName()</string>
     <string name="last_name">lastName</string>
+    <string name="hint_favorite_food">What is your favorite food?</string>
+    <string name="set_name">setName()</string>
+    <string name="name">name</string>
 </resources>

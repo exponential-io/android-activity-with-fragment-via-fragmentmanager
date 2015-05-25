@@ -57,7 +57,6 @@ from Fragment to Fragment, Fragment to Activity, Activity to Fragment, and Activ
    to pass data into the Fragment.
 7.
 
-ACTIVITY EVENT HANDLER DOES NOT WORK AFTER SCREEN ROTATION
 variable values are lost after screen rotation
 
 

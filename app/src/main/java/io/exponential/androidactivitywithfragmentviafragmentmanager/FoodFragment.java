@@ -6,24 +6,22 @@ import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-// Include this import so we can write OnClickListener instead of View.OnClickListener.
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
  * {@link Callbacks} interface
  * to handle interaction events.
- * Use the {@link UserInformationFragment#newInstance} factory method to
+ * Use the {@link FoodFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class UserInformationFragment extends Fragment {
-    public static final String TAG = "UIFragment:lfc";
+public class FoodFragment extends Fragment {
+    public static final String TAG = "FoodFragment:lfc";
 
     // Fragment initialization parameter keys. These keys are used to pass the argument values
     // via a Bundle created in the factory method which is later accessed in onCreate().
@@ -35,66 +33,33 @@ public class UserInformationFragment extends Fragment {
 
     private Callbacks callbacks;
 
-    // sendToActivity is not a good name. A better name would be setFirstNameLastName. However, in
-    // this example the name was chosen to highlight the data flow.
+    // sendToActivity is not a good name. However, in this example the name was chosen to highlight
+    // the data flow.
     OnClickListener sendToActivity = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            EditText firstNameEditText;
-            EditText lastNameEditText;
+            EditText favoriteFoodEditText;
+            Boolean forwardValueToOtherFragment = false;
 
-            // Assign an empty string to both firstName and lastName
-            String firstName = "";
-            String lastName = "";
+            // Assign an empty string to favoriteFood so that we avoid a type error in case view is
+            // null below.
+            String favoriteFood = "";
+
+            // v is the button (view) that was clicked. If the `food_send_to_fragment` button was
+            // clicked then we can set sendToFragment to true.
+            if (v.getId() == R.id.food_send_to_fragment) {
+                forwardValueToOtherFragment = true;
+            }
 
             View view = getView();
 
             if (view != null) {
-                firstNameEditText = (EditText) view.findViewById(R.id.user_information_first_name);
-                lastNameEditText = (EditText) view.findViewById(R.id.user_information_last_name);
-
-                firstName = firstNameEditText.getText().toString();
-                lastName = lastNameEditText.getText().toString();
+                favoriteFoodEditText = (EditText) view.findViewById(R.id.food_favorite_food);
+                favoriteFood = favoriteFoodEditText.getText().toString();
             }
 
             if (callbacks != null) {
-                callbacks.setFirstName(firstName);
-                callbacks.setLastName(lastName);
-            }
-        }
-    };
-
-    OnClickListener sendToFragment = new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            if (callbacks != null) {
-
-                // Notice how all of the code to get the firstName and lastName is similar to the
-                // code in the sendToActivity OnClickListener above. It would make sense to separate
-                // this code into functions such as getFirstName() and getLastName().
-
-                EditText firstNameEditText;
-                EditText lastNameEditText;
-
-                // Assign an empty string to both firstName and lastName
-                String firstName = "";
-                String lastName = "";
-                String name = "";
-
-                View view = getView();
-
-                if (view != null) {
-                    firstNameEditText = (EditText) view.findViewById(R.id.user_information_first_name);
-                    lastNameEditText = (EditText) view.findViewById(R.id.user_information_last_name);
-
-                    firstName = firstNameEditText.getText().toString();
-                    lastName = lastNameEditText.getText().toString();
-
-                    name = firstName + " " + lastName;
-                }
-
-
-                callbacks.sendToFoodFragment(name);
+                callbacks.setFavoriteFood(favoriteFood, forwardValueToOtherFragment);
             }
         }
     };
@@ -104,12 +69,12 @@ public class UserInformationFragment extends Fragment {
      *
      * @param favoriteNumber The activity author's favorite number.
      * @param favoriteColor The activity author's favorite color.
-     * @return A new instance of fragment UserInformationFragment.
+     * @return A new instance of fragment FoodFragment.
      */
-    public static UserInformationFragment newInstance(String favoriteNumber, String favoriteColor) {
+    public static FoodFragment newInstance(String favoriteNumber, String favoriteColor) {
         Log.v(TAG, "S:newInstance");
 
-        UserInformationFragment fragment = new UserInformationFragment();
+        FoodFragment fragment = new FoodFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FAVORITE_NUMBER, favoriteNumber);
         args.putString(ARG_FAVORITE_COLOR, favoriteColor);
@@ -119,7 +84,7 @@ public class UserInformationFragment extends Fragment {
         return fragment;
     }
 
-    public UserInformationFragment() {
+    public FoodFragment() {
         // Required empty public constructor
         Log.v(TAG, "S:constructor");
     }
@@ -146,7 +111,7 @@ public class UserInformationFragment extends Fragment {
         Log.v(TAG, "S:onCreateView");
 
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.user_information, container, false);
+        View view = inflater.inflate(R.layout.food, container, false);
 
         //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
         //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
@@ -155,22 +120,21 @@ public class UserInformationFragment extends Fragment {
         String xxx =  getArguments().getString(ARG_FAVORITE_NUMBER);
 
         // Display the arguments passed via the factor method in the UI
-        TextView favoriteNumberTextView = (TextView) view.findViewById(R.id.user_information_favorite_number);
+        TextView favoriteNumberTextView = (TextView) view.findViewById(R.id.food_favorite_number);
         favoriteNumberTextView.setText(favoriteNumber);
 
-        TextView favoriteColorTextView = (TextView) view.findViewById(R.id.user_information_favorite_color);
+        TextView favoriteColorTextView = (TextView) view.findViewById(R.id.food_favorite_color);
         favoriteColorTextView.setText(favoriteColor);
 
         // Attached event handlers
-        Button sendToActivityButton = (Button) view.findViewById(R.id.user_information_send_to_activity);
-        Button sendToFragmentButton = (Button) view.findViewById(R.id.user_information_send_to_fragment);
+        Button sendToActivityButton = (Button) view.findViewById(R.id.food_send_to_activity);
+        Button sendToFragmentButton = (Button) view.findViewById(R.id.food_send_to_fragment);
 
+        // We are going to reuse the same event handler for both sendToActivity and sendToFragment.
+        // The only difference is that we'll include a Boolean to inform the Activity weather or not
+        // it should forward the request to the UserInformationFragment.
         sendToActivityButton.setOnClickListener(sendToActivity);
-        // sendToFragment is a bad name. Actually, we can only send data to the parent Activity.
-        // It is up to the Activity to send the data to the other Fragment. However, in this case
-        // the name is designed to signify the overall data flow, not direct Fragment to Fragment
-        // communication.
-        sendToFragmentButton.setOnClickListener(sendToFragment);
+        sendToFragmentButton.setOnClickListener(sendToActivity);
 
         Log.v(TAG, "E:onCreateView");
         return view;
@@ -198,31 +162,34 @@ public class UserInformationFragment extends Fragment {
         Log.v(TAG, "E:onDetach");
     }
 
-    // Define public methods that are used by the Activity to pass data and events into the Fragment
+    // Public methods
+    // A Fragment's public methods are used by the Activity to pass data and events into the
+    // Fragment
+
     public void setAge (String age) {
         View view = getView();
 
         if (view != null) {
-            TextView ageTextView = (TextView) view.findViewById(R.id.user_information_age);
+            TextView ageTextView = (TextView) view.findViewById(R.id.food_age);
             ageTextView.setText(age);
         }
     }
 
-    public void setFood(String favoriteFood) {
+    public void setName(String name) {
         View view = getView();
 
         if (view != null) {
-            TextView favoriteFoodTextView = (TextView) view.findViewById(R.id.user_information_favorite_food);
-            favoriteFoodTextView.setText(favoriteFood);
+            TextView nameTextView = (TextView) view.findViewById(R.id.food_name);
+            nameTextView.setText(name);
+            // TODO: TEST IF THIS SHORTER FORM WORKS AS WELL
+            //((TextView) view.findViewById(R.id.food_name)).setText(name);
         }
     }
 
     // The interface methods, which must be implemented by the parent Activity, allow this Fragment
     // to pass data and events up to the Activity.
     public interface Callbacks {
-        public void setFirstName(String firstName);
-        public void setLastName(String lastName);
-        public void sendToFoodFragment(String name);
+        public void setFavoriteFood(String favoriteFood, Boolean sendValueToOtherFragment);
     }
 
 }

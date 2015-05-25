@@ -18,11 +18,14 @@ import android.widget.TextView;
 
 public class MainActivity
         extends AppCompatActivity
-        implements UserInformationFragment.Callbacks {
+        implements UserInformationFragment.Callbacks, FoodFragment.Callbacks {
 
     public static final String TAG = "MainActivity:lfc";
 
     // Event handlers
+    /**
+     * Pass age to both the UserInformationFragment and the FoodFragment.
+     */
     OnClickListener setAge = new OnClickListener() {
         @Override
         public void onClick(View v) {
@@ -36,6 +39,13 @@ public class MainActivity
 
             // Pass age to the Fragment via a public method
             userInformationFragment.setAge(age);
+
+            // Get a reference to the existing FoodFragment instance
+            FoodFragment foodFragment =
+                    (FoodFragment) getSupportFragmentManager().findFragmentById(R.id.food_container);
+
+            // Pass age to the Fragment via a public method
+            foodFragment.setAge(age);
         }
     };
 
@@ -45,6 +55,8 @@ public class MainActivity
         setContentView(R.layout.activity_main);
         Log.v(TAG, "S:onCreate");
 
+        String favoriteNumber = "9";
+        String favoriteColor = "green";
 
         // Get the intent here and extract any data passed as extras. Also, these extras can be
         // passed to each Fragment via its newInstance() factory method.
@@ -62,7 +74,9 @@ public class MainActivity
         // different layouts for different device sizes and orientations. Therefore, we need to
         // write our logic such that logic for specific Fragment only runs when that Fragment is
         // present.
-        if (findViewById(R.id.user_information_container) != null) {
+
+        if (findViewById(R.id.user_information_container) != null
+                && findViewById(R.id.food_container) != null) {
 
             // However, if we're being restored from a previous state,
             // then we don't need to do anything and should return or else
@@ -71,8 +85,7 @@ public class MainActivity
                 return;
             }
 
-            String favoriteNumber = "9";
-            String favoriteColor = "green";
+
 
             // Create an instance of UserInformationFragment via the Fragment's factory method. We
             // pass both favoriteNumber and favoriteColor from this Activity into the Fragment when
@@ -81,15 +94,22 @@ public class MainActivity
             UserInformationFragment userInformationFragment = UserInformationFragment
                     .newInstance(favoriteNumber, favoriteColor);
 
-            // Add the fragment to the `user_information_container` FrameLayout
+            // Create an instance of the FoodFragment
+            FoodFragment foodFragment = FoodFragment.newInstance(favoriteNumber, favoriteColor);
+
+            // Get a reference to the FragmentManager and begin a FragmentTransaction
             FragmentManager fm = getSupportFragmentManager();
             FragmentTransaction ft = fm.beginTransaction();
 
-            // A better way of writing the two lines above is as a single line. There is not need
+            // A better way of writing the two lines above is as a single line. There is no need
             // to create the `fm` variable.
             //FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
-            ft.add(R.id.user_information_container, userInformationFragment).commit();
+            // Insert both Fragments into the Activity's layout
+            ft.add(R.id.user_information_container, userInformationFragment);
+            ft.add(R.id.food_container, foodFragment);
+
+            ft.commit();
         }
 
         Log.v(TAG, "E:onCreate");
@@ -135,8 +155,33 @@ public class MainActivity
     }
 
     @Override
-    public void sayHi(String greeting) {
-        // Pass greeting down to the other Fragment
+    public void sendToFoodFragment(String name) {
+        // Pass name down to FoodFragment
+        // Get a reference to the existing UserInformationFragment instance
+        FoodFragment foodFragment =
+                (FoodFragment) getSupportFragmentManager().findFragmentById(R.id.food_container);
 
+        // Pass age to the Fragment via a public method
+        foodFragment.setName(name);
+    }
+
+    @Override
+    public void setFavoriteFood(String favoriteFood, Boolean sendValueToOtherFragment) {
+        if (sendValueToOtherFragment) {
+            // Pass favorite food to UserInformationFragment by calling a public method
+
+            // Get a reference to the existing UserInformationFragment instance
+            UserInformationFragment userInformationFragment =
+                    (UserInformationFragment) getSupportFragmentManager()
+                            .findFragmentById(R.id.user_information_container);
+
+            // Pass age to the Fragment via a public method
+            userInformationFragment.setFood(favoriteFood);
+        } else {
+            // Display favoriteFood in this Activity's layout
+
+            TextView favoriteFoodTextView = (TextView) findViewById(R.id.activity_main_favorite_food);
+            favoriteFoodTextView.setText(favoriteFood);
+        }
     }
 }
