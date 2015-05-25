@@ -1,0 +1,246 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:background="@color/orange"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical"
+              android:padding="@dimen/fragment_padding"
+              tools:context="io.exponential.androidactivitywithfragmentviafragmentmanager.UserInformationFragment">
+
+    <!--
+        1. Naming convention
+
+        In this example we are using a new naming convention for ids. Specifically, each id is
+        prefixed with `name_of_fragment`. The reason for this naming convention is that it enables
+        us to use a layout in a Fragment or Activity without worrying that an id may clash with an
+        id in either the Activity's layout or an id in another Fragment's layout.
+
+        Benefits of this naming convention:
+        - Ensures that a Fragment can be used in any Activity without concern of name clashes;
+        - Helps you use code completion by typing `name_of_activity` to see only ids that are used
+          in this layout.
+
+        Problems with this naming convention:
+        - The ids are very long.
+
+        2. TableLayout
+
+        This example uses TableLayout to display the various input/output variables from the
+        Fragment and Activity.
+
+        ref: https://developer.android.com/guide/topics/ui/layout/grid.html
+    -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <EditText
+            android:id="@+id/user_information_first_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_first_name"/>
+
+        <EditText
+            android:id="@+id/user_information_last_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="@string/hint_last_name"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/user_information_send_to_activity"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_to_activity"/>
+
+        <Button
+            android:id="@+id/user_information_send_to_fragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/send_to_fragment"/>
+
+    </LinearLayout>
+
+    <!--
+        1. Create a new drawable resource (border.xml) in res/drawable.
+        2. Use stretchColumns to make the table 100% width.
+
+        The border.xml is very crude. For a production quality app, we would create a more advanced
+        border where each cell (i.e. TextView) has a border on the top, bottom and left, except for
+        the last cell. The last cell would have a border on the top, right, and bottom. This would
+        eliminate the double border. In this example we used a hack that sets the
+        layout_marginLeft to -1dp.
+
+        Also, a production implementation would likely use an array or iterable data type. Then each
+        row would be stored as a template, and we'd create the table rows by interating over the
+        data, insert it into a row, then inserting all rows into the table.
+    -->
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:textStyle="bold"
+                android:text="@string/from"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:textStyle="bold"
+                android:text="@string/via"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:textStyle="bold"
+                android:text="@string/variable"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:textStyle="bold"
+                android:text="@string/value"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/border_adjustment">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:text="@string/activity_to_fragment"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/params"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/favorite_number"/>
+            <TextView
+                android:id="@+id/user_information_favorite_number"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/border_adjustment">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:text="@string/activity_to_fragment"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/params"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/favorite_color"/>
+            <TextView
+                android:id="@+id/user_information_favorite_color"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/border_adjustment">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:text="@string/activity_to_fragment"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/set_age"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/age"/>
+            <TextView
+                android:id="@+id/user_information_age"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"/>
+        </TableRow>
+
+        <TableRow android:layout_marginTop="@dimen/border_adjustment">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:text="@string/other_fragment"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/set_food"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"
+                android:text="@string/favorite_food"/>
+            <TextView
+                android:id="@+id/user_information_favorite_food"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:padding="@dimen/table_header_padding"
+                android:layout_marginLeft="@dimen/border_adjustment"/>
+        </TableRow>
+    </TableLayout>
+
+</LinearLayout>

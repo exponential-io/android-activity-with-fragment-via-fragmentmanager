@@ -1,0 +1,35 @@
+<resources>
+    <string name="app_name">Android Activity with Fragment via FragmentManager</string>
+
+    <string name="action_settings">Settings</string>
+
+    <string name="hint_first_name">First name</string>
+    <string name="hint_last_name">Last name</string>
+    <string name="send_to_activity">Send to Activity</string>
+    <string name="send_to_fragment">Send to Fragment</string>
+    <string name="arguments">Args (number, color):</string>
+    <string name="placeholder">Placeholder</string>
+    <string name="from">From</string>
+    <string name="via">Via</string>
+    <string name="value">Value</string>
+    <string name="variable">Variable</string>
+    <string name="params">Params</string>
+    <string name="favorite_number">favoriteNumber</string>
+    <string name="favorite_color">favoriteColor</string>
+    <string name="age">age</string>
+    <string name="activity_to_fragment"><![CDATA[A -> F]]></string>
+    <string name="roundtrip_fragment"><![CDATA[F -> A -> F]]></string>
+    <string name="other_fragment"><![CDATA[OF -> A -> F]]></string>
+    <string name="favorite_food">favoriteFood</string>
+    <string name="set_food">setFood()</string>
+    <string name="set_age">setAge()</string>
+    <string name="main_activity">Main Activity</string>
+    <string name="user_information_fragment">User Information Fragment</string>
+    <string name="food_fragment">Food Fragment</string>
+    <string name="button_set_age">Set Age</string>
+    <string name="fragment_to_activity"><![CDATA[F -> A]]></string>
+    <string name="set_first_name">setFirstName()</string>
+    <string name="first_name">firstName</string>
+    <string name="set_last_name">setLastName()</string>
+    <string name="last_name">lastName</string>
+</resources>
