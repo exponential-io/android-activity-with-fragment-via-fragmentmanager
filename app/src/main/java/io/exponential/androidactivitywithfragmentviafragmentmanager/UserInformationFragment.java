@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 // Include this import so we can write OnClickListener instead of View.OnClickListener.
@@ -23,6 +24,8 @@ import android.widget.TextView;
  * create an instance of this fragment.
  */
 public class UserInformationFragment extends Fragment {
+    public static final String TAG = "UIFragment:lfc";
+
     // Fragment initialization parameter keys. These keys are used to pass the argument values
     // via a Bundle created in the factory method which is later accessed in onCreate().
     private static final String ARG_FAVORITE_NUMBER = "io.exponential.app.favoriteNumber";
@@ -79,25 +82,34 @@ public class UserInformationFragment extends Fragment {
      * @return A new instance of fragment UserInformationFragment.
      */
     public static UserInformationFragment newInstance(String favoriteNumber, String favoriteColor) {
+        Log.v(TAG, "S:newInstance");
+
         UserInformationFragment fragment = new UserInformationFragment();
         Bundle args = new Bundle();
         args.putString(ARG_FAVORITE_NUMBER, favoriteNumber);
         args.putString(ARG_FAVORITE_COLOR, favoriteColor);
         fragment.setArguments(args);
+
+        Log.v(TAG, "E:newInstance");
         return fragment;
     }
 
     public UserInformationFragment() {
         // Required empty public constructor
+        Log.v(TAG, "S:constructor");
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        Log.v(TAG, "S:onCreate");
+
         if (getArguments() != null) {
             favoriteNumber = getArguments().getString(ARG_FAVORITE_NUMBER);
             favoriteColor = getArguments().getString(ARG_FAVORITE_COLOR);
         }
+
+        Log.v(TAG, "E:onCreate");
     }
 
     @Override
@@ -105,6 +117,8 @@ public class UserInformationFragment extends Fragment {
             LayoutInflater inflater,
             ViewGroup container,
             Bundle savedInstanceState) {
+
+        Log.v(TAG, "S:onCreateView");
 
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.user_information, container, false);
@@ -133,23 +147,30 @@ public class UserInformationFragment extends Fragment {
         // communication.
         sendToFragmentButton.setOnClickListener(sendToFragment);
 
+        Log.v(TAG, "E:onCreateView");
         return view;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
+        Log.v(TAG, "S:onAttach");
+
         try {
             callbacks = (Callbacks) activity;
         } catch (ClassCastException e) {
             throw new ClassCastException(activity.toString() + " must implement Callbacks");
         }
+
+        Log.v(TAG, "E:onAttach");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        Log.v(TAG, "S:onDetach");
         callbacks = null;
+        Log.v(TAG, "E:onDetach");
     }
 
     // Define public methods that are used by the Activity to pass data and events into the Fragment

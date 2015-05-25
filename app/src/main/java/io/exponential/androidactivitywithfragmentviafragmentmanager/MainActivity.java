@@ -1,10 +1,12 @@
 package io.exponential.androidactivitywithfragmentviafragmentmanager;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +19,8 @@ import android.widget.TextView;
 public class MainActivity
         extends AppCompatActivity
         implements UserInformationFragment.Callbacks {
+
+    public static final String TAG = "MainActivity:lfc";
 
     // Event handlers
     OnClickListener setAge = new OnClickListener() {
@@ -39,12 +43,20 @@ public class MainActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Log.v(TAG, "S:onCreate");
 
 
         // Get the intent here and extract any data passed as extras. Also, these extras can be
         // passed to each Fragment via its newInstance() factory method.
         //Intent intent = getIntent();
         //String someString = intent.getStringExtra(SomeActivity.EXTRA_SOME_KEY);
+
+        // Attach event handlers. You must attach the event handlers before creating the Fragment
+        // because `if (savedInstanceState != null)` returns immediately if the Fragment is being
+        // restored from a previous state (which is true when the screen is rotated).
+
+        Button setAgeButton = (Button) findViewById(R.id.activity_main_set_age);
+        setAgeButton.setOnClickListener(setAge);
 
         // In production, an Activity will use multiple layouts. Specifically, an Activity will use
         // different layouts for different device sizes and orientations. Therefore, we need to
@@ -80,14 +92,12 @@ public class MainActivity
             ft.add(R.id.user_information_container, userInformationFragment).commit();
         }
 
-        // TODO: WHERE TO PUT EVENT HANDLERS
-        // TODO: WHERE TO PUT EVENT HANDLERS
-        // TODO: WHERE TO PUT EVENT HANDLERS
-        // TODO: WHERE TO PUT EVENT HANDLERS
-        // Attach event handlers. This is a bad location to attach event handlers as the Activity's
-        // onCreate() method is not called again after a screen rotation.
-        Button setAgeButton = (Button) findViewById(R.id.activity_main_set_age);
-        setAgeButton.setOnClickListener(setAge);
+        Log.v(TAG, "E:onCreate");
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
     }
 
     @Override

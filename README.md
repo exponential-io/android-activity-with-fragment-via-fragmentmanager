@@ -65,6 +65,9 @@ variable values are lost after screen rotation
 
 
 
+
+
+
 ## How to use a Fragment within an Activity
 
 Fragments are standalone components that are not coupled with Activities. Therefore, we need to
