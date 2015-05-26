@@ -16,33 +16,30 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 
-public class MainActivity
-        extends AppCompatActivity
+public class MainActivity extends AppCompatActivity
         implements UserInformationFragment.Callbacks, FoodFragment.Callbacks {
 
     public static final String TAG = "MainActivity:lfc";
 
     // Event handlers
-    /**
-     * Pass age to both the UserInformationFragment and the FoodFragment.
-     */
+
+    // Pass age to both the UserInformationFragment and the FoodFragment.
     OnClickListener setAge = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            EditText ageEditText = (EditText) findViewById(R.id.main_activity_age);
-            String age = ageEditText.getText().toString();
+            String age = ((EditText) findViewById(R.id.main_activity_age)).getText().toString();
 
             // Get a reference to the existing UserInformationFragment instance
+            FragmentManager fm = getSupportFragmentManager();
+
             UserInformationFragment userInformationFragment =
-                    (UserInformationFragment) getSupportFragmentManager()
-                            .findFragmentById(R.id.user_information_container);
+                    (UserInformationFragment) fm.findFragmentById(R.id.user_information_container);
 
             // Pass age to the Fragment via a public method
             userInformationFragment.setAge(age);
 
             // Get a reference to the existing FoodFragment instance
-            FoodFragment foodFragment =
-                    (FoodFragment) getSupportFragmentManager().findFragmentById(R.id.food_container);
+            FoodFragment foodFragment = (FoodFragment) fm.findFragmentById(R.id.food_container);
 
             // Pass age to the Fragment via a public method
             foodFragment.setAge(age);
@@ -84,8 +81,6 @@ public class MainActivity
             if (savedInstanceState != null) {
                 return;
             }
-
-
 
             // Create an instance of UserInformationFragment via the Fragment's factory method. We
             // pass both favoriteNumber and favoriteColor from this Activity into the Fragment when
