@@ -148,11 +148,10 @@ public class UserInformationFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.user_information, container, false);
 
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        String xxx =  getArguments().getString(ARG_FAVORITE_NUMBER);
+        // Note: getArguments() works in onCreateView(). However, it appears that the recommended
+        //       approach is to call getArguments() in onCreate(), and to then use a member variable
+        //       to store the argument values.
+        //String favoriteNumber =  getArguments().getString(ARG_FAVORITE_NUMBER);
 
         // Display the arguments passed via the factor method in the UI
         TextView favoriteNumberTextView = (TextView) view.findViewById(R.id.user_information_favorite_number);
@@ -162,14 +161,15 @@ public class UserInformationFragment extends Fragment {
         favoriteColorTextView.setText(favoriteColor);
 
         // Attached event handlers
-        Button sendToActivityButton = (Button) view.findViewById(R.id.user_information_send_to_activity);
-        Button sendToFragmentButton = (Button) view.findViewById(R.id.user_information_send_to_fragment);
 
+        Button sendToActivityButton = (Button) view.findViewById(R.id.user_information_send_to_activity);
         sendToActivityButton.setOnClickListener(sendToActivity);
+
         // sendToFragment is a bad name. Actually, we can only send data to the parent Activity.
         // It is up to the Activity to send the data to the other Fragment. However, in this case
         // the name is designed to signify the overall data flow, not direct Fragment to Fragment
         // communication.
+        Button sendToFragmentButton = (Button) view.findViewById(R.id.user_information_send_to_fragment);
         sendToFragmentButton.setOnClickListener(sendToFragment);
 
         Log.v(TAG, "E:onCreateView");

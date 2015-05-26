@@ -113,11 +113,10 @@ public class FoodFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.food, container, false);
 
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        //TODO: THIS WORKS, SO WHY SHOULD I USE A MEMBER VARIABLE VS. CALLING getArguments()???
-        String xxx =  getArguments().getString(ARG_FAVORITE_NUMBER);
+        // Note: getArguments() works in onCreateView(). However, it appears that the recommended
+        //       approach is to call getArguments() in onCreate(), and to then use a member variable
+        //       to store the argument values.
+        //String favoriteNumber =  getArguments().getString(ARG_FAVORITE_NUMBER);
 
         // Display the arguments passed via the factor method in the UI
         TextView favoriteNumberTextView = (TextView) view.findViewById(R.id.food_favorite_number);
@@ -179,10 +178,12 @@ public class FoodFragment extends Fragment {
         View view = getView();
 
         if (view != null) {
-            TextView nameTextView = (TextView) view.findViewById(R.id.food_name);
-            nameTextView.setText(name);
-            // TODO: TEST IF THIS SHORTER FORM WORKS AS WELL
-            //((TextView) view.findViewById(R.id.food_name)).setText(name);
+            //TextView nameTextView = (TextView) view.findViewById(R.id.food_name);
+            //nameTextView.setText(name);
+
+            // Same code as the 2 lines above but written without the use of the nameTextView single
+            // use variable
+            ((TextView) view.findViewById(R.id.food_name)).setText(name);
         }
     }
 
